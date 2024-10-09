@@ -32,7 +32,9 @@ ACCENT="$2"
 WINDECSTYLE="$3"
 DEBUGMODE="$4"
 
-clear
+if [ "$DEBUGMODE" != "-y" ]; then
+    clear
+fi
 
 if [ -z "$1" ]; then
     cat <<EOF
@@ -45,7 +47,9 @@ Choose flavor out of -
     (Type the number corresponding to said palette)
 EOF
     read -r FLAVOUR
-    clear
+    if [ "$DEBUGMODE" != "-y" ]; then
+        clear
+    fi
 fi
 
 case "$FLAVOUR" in
@@ -80,7 +84,9 @@ Choose an accent -
     14. Lavender
 EOF
     read -r ACCENT
-    clear
+    if [ "$DEBUGMODE" != "-y" ]; then
+        clear
+    fi
 fi
 
 # Sets accent based on the palette selected (Best to fold this in your respective editor)
@@ -229,7 +235,9 @@ Choose window decoration style -
     2. Classic (MacOS like)
 EOF
     read -r WINDECSTYLE
-    clear
+    if [ "$DEBUGMODE" != "-y" ]; then
+        clear
+    fi
 fi
 
 WINDECSTYLENAME=""
@@ -399,11 +407,15 @@ case "$DEBUGMODE" in
         echo
         echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/N]:"
         read -r CONFIRMATION
-        clear
+        if [ "$DEBUGMODE" != "-y" ]; then
+            clear
+        fi
         ;;
-	auto)
+	-y)
 		CONFIRMATION=Y
-		clear
+		if [ "$DEBUGMODE" != "-y" ]; then
+            clear
+        fi
 		;;
 	aurorae)
 		InstallAuroraeTheme
@@ -447,7 +459,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     echo "Cleaning up.."
 	rm -r ./dist
 
-    if [ "$DEBUGMODE" != "auto" ]; then
+    if [ "$DEBUGMODE" != "-y" ]; then
         # Apply theme
         echo
         echo "Do you want to apply theme? [y/N]:"
@@ -456,7 +468,9 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
-        clear
+        if [ "$DEBUGMODE" != "-y" ]; then
+            clear
+        fi
         # Some legacy apps still look in ~/.icons
         cat <<EOF
 The cursors will fully apply once you log out
